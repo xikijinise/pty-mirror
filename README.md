@@ -8,56 +8,21 @@
 - host 启动并看到提示符后自动发送一次完整屏幕；你按 Enter 执行命令后，等命令真正回到提示符，再自动发送一次追加更新。
 - 默认 Bash 使用不可见的 OSC 提示符标记判断命令完成，所以 `sleep 2; echo done` 不会在 250ms 时被误判完成。
 
-## 一条命令安装
+## 运行
 
-在 Ubuntu 中运行：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xikijinise/pty-mirror/main/install.sh | bash
-```
-
-安装脚本会自动检查 `python3-pyte`、安装程序，并创建 `pm` 命令。重复运行同一条命令即可更新。
-
-不想直接执行网络脚本时，也可以先克隆再安装：
+先安装屏幕解析器：
 
 ```bash
-git clone https://github.com/xikijinise/pty-mirror.git
-cd pty-mirror
-./install.sh
+sudo apt-get install -y python3-pyte
 ```
 
-卸载：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xikijinise/pty-mirror/main/install.sh | bash -s -- --uninstall
-```
-
-## 使用数字菜单
-
-安装后只运行一个命令：
+现在已经安装了短命令 `pm`。在你要操作的终端只运行：
 
 ```bash
 pm
 ```
 
-然后输入数字选择功能：
-
-```text
-pty-mirror
-  1) 启动被监控终端
-  2) 实时只读查看
-  3) 查看当前状态后退出
-  4) 输出 JSON 事件
-  5) 列出运行中的会话
-  6) 显示完整帮助
-  0) 退出
-```
-
-选择 `1` 后，这个终端仍是你操作的终端。退出子 shell 使用正常的 `exit` 或 `Ctrl-D`。
-
-## 快捷命令
-
-不经过菜单时，原来的快捷命令仍然可用。
+这个终端仍是你操作的终端。退出这个 shell 用正常的 `exit` 或 `Ctrl-D`。
 
 如果手动查看接收端，可以运行：
 
