@@ -1,0 +1,29 @@
+# This file is passed to Bash with --rcfile by pty-mirror.
+# It keeps the user's normal ~/.bashrc and adds one invisible prompt marker.
+
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
+if [ -r "${HOME}/.bashrc" ] && [ "${HOME}/.bashrc" != "${PTY_MIRROR_BASHRC:-}" ]; then
+    . "${HOME}/.bashrc"
+fi
+
+__pty_mirror_precmd() {
+    local __pty_mirror_status=$?
+    printf '\033]133;A\007'
+    return "$__pty_mirror_status"
+}
+
+case $(declare -p PROMPT_COMMAND 2>/dev/null) in
+    "declare -a"*|"declare -A"*)
+        PROMPT_COMMAND=(__pty_mirror_precmd "${PROMPT_COMMAND[@]}")
+        ;;
+    *)
+        case ";${PROMPT_COMMAND:-};" in
+            *";__pty_mirror_precmd;"*) ;;
+            *) PROMPT_COMMAND="__pty_mirror_precmd${PROMPT_COMMAND:+;${PROMPT_COMMAND}}" ;;
+        esac
+        ;;
+esac
